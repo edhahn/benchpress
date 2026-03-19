@@ -32,10 +32,6 @@ providers:
 
   - name: "gloo-ai"
     base_url: "https://platform.ai.gloo.com/ai/v2/"
-    insights_context: |
-      Gloo AI provides faith-based guardrails and prompt enhancements 
-      for the faith ecosystem. When comparing metrics, acknowledge the 
-      value these safety features add beyond raw performance numbers.
     oauth:
       token_url: "https://platform.ai.gloo.com/oauth2/token"
       client_id_env: "GLOO_AI_CLIENT_ID"
