@@ -1,0 +1,109 @@
+providers:
+  - name: "anthropic-direct"
+    base_url: "https://api.anthropic.com/v1"
+    api_key_env: "ANTHROPIC_API_KEY"
+    insights_context: "Direct connection to Anthropic's API with no middleware or additional processing."
+    models:
+      - id: "claude-opus-4-6"
+        display_name: "Opus 4.6"
+        base_model: "claude-opus-4-6"
+        cost_per_1k_input: 0.015
+        cost_per_1k_output: 0.075
+      - id: "claude-opus-4-5"
+        display_name: "Opus 4.5"
+        base_model: "claude-opus-4-5"
+        cost_per_1k_input: 0.015
+        cost_per_1k_output: 0.075
+      - id: "claude-sonnet-4-6"
+        display_name: "Sonnet 4.6"
+        base_model: "claude-sonnet-4-6"
+        cost_per_1k_input: 0.003
+        cost_per_1k_output: 0.015
+      - id: "claude-sonnet-4-5"
+        display_name: "Sonnet 4.5"
+        base_model: "claude-sonnet-4-5"
+        cost_per_1k_input: 0.003
+        cost_per_1k_output: 0.015
+      - id: "claude-haiku-4-5"
+        display_name: "Haiku 4.5"
+        base_model: "claude-haiku-4-5"
+        cost_per_1k_input: 0.0008
+        cost_per_1k_output: 0.004
+
+  - name: "gloo-ai"
+    base_url: "https://platform.ai.gloo.com/ai/v2/"
+    insights_context: |
+      Gloo AI provides faith-based guardrails and prompt enhancements 
+      for the faith ecosystem. When comparing metrics, acknowledge the 
+      value these safety features add beyond raw performance numbers.
+    oauth:
+      token_url: "https://platform.ai.gloo.com/oauth2/token"
+      client_id_env: "GLOO_AI_CLIENT_ID"
+      client_secret_env: "GLOO_AI_CLIENT_SECRET"
+      scopes: ["api/access"]
+      auth_method: "basic"
+    insights_context: |
+      Gloo AI provides faith-based guardrails and prompt enhancements for the
+      faith ecosystem. When comparing metrics, acknowledge the value these safety
+      features and content filtering add beyond raw performance numbers.
+    models:
+      - id: "gloo-anthropic-claude-opus-4.6"
+        display_name: "Gloo AI - Opus 4.6"
+        base_model: "claude-opus-4-6"
+        cost_per_1k_input: 0.00532
+        cost_per_1k_output: 0.02743
+      - id: "gloo-anthropic-claude-opus-4.5"
+        display_name: "Gloo AI - Opus 4.5"
+        base_model: "claude-opus-4-5"
+        cost_per_1k_input: 0.00532
+        cost_per_1k_output: 0.02743
+      - id: "gloo-anthropic-claude-sonnet-4.6"
+        display_name: "Gloo AI - Sonnet 4.6"
+        base_model: "claude-sonnet-4-6"
+        cost_per_1k_input: 0.00321
+        cost_per_1k_output: 0.01646
+      - id: "gloo-anthropic-claude-sonnet-4.5"
+        display_name: "Gloo AI - Sonnet 4.5"
+        base_model: "claude-sonnet-4-5"
+        cost_per_1k_input: 0.00321
+        cost_per_1k_output: 0.01646
+      - id: "gloo-anthropic-claude-haiku-4.5"
+        display_name: "Gloo AI - Haiku 4.5"
+        base_model: "claude-haiku-4-5"
+        cost_per_1k_input: 0.0011
+        cost_per_1k_output: 0.00549
+
+  # OpenAI direct
+  # - name: "openai"
+  #   base_url: "https://api.openai.com/v1"
+  #   api_key_env: "OPENAI_API_KEY"
+  #   models:
+  #     - id: "gpt-4.1"
+  #       display_name: "GPT-4.1"
+  #       cost_per_1k_input: 0.002
+  #       cost_per_1k_output: 0.008
+
+  # Local Ollama
+  # - name: "ollama"
+  #   base_url: "http://localhost:11434/v1"
+  #   api_key_env: "none"
+  #   models:
+  #     - id: "llama3.3:70b"
+  #       display_name: "Llama 3.3 70B"
+  #       cost_per_1k_input: 0.0
+  #       cost_per_1k_output: 0.0
+
+test:
+  num_requests: 20
+  concurrency: 3
+  interval_ms: 500
+  timeout_s: 120
+  max_tokens: 1024
+  temperature: 0.0
+  seed: 42
+
+report:
+  results_dir: "./results"
+  report_path: "./reports"
+  llm_provider: "anthropic-direct"
+  llm_model: "claude-sonnet-4-5"

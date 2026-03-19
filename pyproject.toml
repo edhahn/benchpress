@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "benchpress"
+version = "0.1.0"
+description = "CLI tool to benchmark LLM providers and models for response time, quality, and cost"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx[http2]>=0.27",
+    "typer[all]>=0.12",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "fpdf2>=2.8",
+    "numpy>=1.26",
+    "python-dotenv>=1.0",
+]
+
+[project.scripts]
+benchpress = "benchpress.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["benchpress*"]

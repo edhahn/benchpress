@@ -1,0 +1,7 @@
+*.egg-info
+.env
+.superpowers
+__pycache__
+docs
+reports
+results
