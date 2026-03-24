@@ -12,6 +12,28 @@ from benchpress.models import BenchmarkRun, ModelSummary
 
 logger = logging.getLogger(__name__)
 
+# Unicode -> latin-1-safe replacements for built-in PDF fonts
+_UNICODE_REPLACEMENTS = {
+    "\u2014": "--",   # em dash
+    "\u2013": "-",    # en dash
+    "\u2018": "'",    # left single quote
+    "\u2019": "'",    # right single quote
+    "\u201c": '"',    # left double quote
+    "\u201d": '"',    # right double quote
+    "\u2026": "...",  # ellipsis
+    "\u2022": "*",    # bullet
+    "\u00a0": " ",    # non-breaking space
+    "\u2032": "'",    # prime
+    "\u2033": '"',    # double prime
+}
+
+def _sanitize_text(text: str) -> str:
+    """Replace unicode characters that built-in PDF fonts can't encode."""
+    for char, replacement in _UNICODE_REPLACEMENTS.items():
+        text = text.replace(char, replacement)
+    # Fallback: replace any remaining non-latin-1 chars
+    return text.encode("latin-1", errors="replace").decode("latin-1")
+
 # Color palette
 COLOR_HEADER = (44, 62, 80)
 COLOR_ACCENT = (52, 152, 219)
@@ -418,7 +440,7 @@ def _title_page(
     pdf.set_text_color(*COLOR_BODY_TEXT)
 
     if executive_insight:
-        pdf.multi_cell(0, 5, f"  {executive_insight}", new_x="LMARGIN", new_y="NEXT")
+        pdf.multi_cell(0, 5, f"  {_sanitize_text(executive_insight)}", new_x="LMARGIN", new_y="NEXT")
     else:
         pdf.set_text_color(*COLOR_MUTED)
         pdf.set_font("Helvetica", "I", 9)
@@ -554,7 +576,7 @@ def _render_comparison(
     if insight:
         pdf.set_font("Helvetica", "", 8)
         pdf.set_text_color(*COLOR_BODY_TEXT)
-        pdf.multi_cell(0, 4.5, insight, new_x="LMARGIN", new_y="NEXT")
+        pdf.multi_cell(0, 4.5, _sanitize_text(insight), new_x="LMARGIN", new_y="NEXT")
     else:
         pdf.set_font("Helvetica", "I", 8)
         pdf.set_text_color(*COLOR_MUTED)
@@ -689,7 +711,7 @@ def _appendix_tables(
             seen_messages: set[str] = set()
             shown = 0
             for r in errors:
-                msg = (r.error_message or "Unknown")[:120]
+                msg = _sanitize_text((r.error_message or "Unknown")[:120])
                 if msg not in seen_messages and shown < 3:
                     seen_messages.add(msg)
                     pdf.cell(

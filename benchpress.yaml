@@ -69,6 +69,20 @@ providers:
         cost_per_1k_input: 0.0011
         cost_per_1k_output: 0.00549
 
+  # OpenRouter
+  - name: "openrouter"
+    base_url: "https://openrouter.ai/api/v1"
+    api_key_env: "OPENROUTER_API_KEY"
+    extra_headers:
+      HTTP-Referer: "https://github.com/benchpress"
+      X-Title: "Benchpress"
+    models:
+      - id: "xiaomi/mimo-v2-pro"
+        display_name: "Mimo-V2-Pro"
+        cost_per_1k_input: 0
+        cost_per_1k_output: 0
+
+
   # OpenAI direct
   # - name: "openai"
   #   base_url: "https://api.openai.com/v1"
